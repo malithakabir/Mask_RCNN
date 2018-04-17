@@ -44,7 +44,8 @@ from pycocotools.cocoeval import COCOeval
 from pycocotools import mask as maskUtils
 
 import zipfile
-import urllib.request
+#import urllib.request
+from urllib import urlopen
 import shutil
 
 # Root directory of the project
@@ -174,8 +175,11 @@ class CocoDataset(utils.Dataset):
         if not os.path.exists(imgDir):
             os.makedirs(imgDir)
             print("Downloading images to " + imgZipFile + " ...")
-            with urllib.request.urlopen(imgURL) as resp, open(imgZipFile, 'wb') as out:
-                shutil.copyfileobj(resp, out)
+            #with urllib.request.urlopen(imgURL) as resp, open(imgZipFile, 'wb') as out:
+            resp = urlopen(imgURL)
+            out = open(imgZipFile, 'wb')
+            shutil.copyfileobj(resp, out)
+            
             print("... done downloading.")
             print("Unzipping " + imgZipFile)
             with zipfile.ZipFile(imgZipFile, "r") as zip_ref:
@@ -208,8 +212,10 @@ class CocoDataset(utils.Dataset):
         if not os.path.exists(annFile):
             if not os.path.exists(annZipFile):
                 print("Downloading zipped annotations to " + annZipFile + " ...")
-                with urllib.request.urlopen(annURL) as resp, open(annZipFile, 'wb') as out:
-                    shutil.copyfileobj(resp, out)
+                #with urllib.request.urlopen(annURL) as resp, open(annZipFile, 'wb') as out:
+                resp = urlopen(annURL)
+                out = open(annZipFile, 'wb')
+                shutil.copyfileobj(resp, out)
                 print("... done downloading.")
             print("Unzipping " + annZipFile)
             with zipfile.ZipFile(annZipFile, "r") as zip_ref:
