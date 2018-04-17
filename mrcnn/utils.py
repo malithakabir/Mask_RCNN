@@ -17,7 +17,8 @@ import scipy
 import skimage.color
 import skimage.io
 import skimage.transform
-import urllib.request
+#import urllib.request
+from urllib import urlopen
 import shutil
 import warnings
 
@@ -849,8 +850,12 @@ def download_trained_weights(coco_model_path, verbose=1):
     """
     if verbose > 0:
         print("Downloading pretrained model to " + coco_model_path + " ...")
-    with urllib.request.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
-        shutil.copyfileobj(resp, out)
+       
+    #with urllib.request.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
+    resp = urlopen(COCO_MODEL_URL)
+    out = open(coco_model_path, 'wb')
+    shutil.copyfileobj(resp, out)
+    
     if verbose > 0:
         print("... done downloading pretrained model!")
 
